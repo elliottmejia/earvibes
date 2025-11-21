@@ -169,8 +169,8 @@ export const generateProgression = (levelId: number, type: LevelType): Progressi
     
     // 40% chance to pick a pre-defined stylistic sequence
     if (Math.random() < 0.4) {
-      const seq = sequences[Math.floor(Math.random() * sequences.length)];
-      const chords = seq.map(roman => ({
+      const seq = sequences[Math.floor(Math.random() * sequences.length)] || sequences[0];
+      const chords = (seq || []).map(roman => ({
         roman,
         notes: map[roman] || [],
         displayName: roman
@@ -198,7 +198,7 @@ export const generateProgression = (levelId: number, type: LevelType): Progressi
     if (!notes) continue;
 
     // Avoid immediate repetition for musicality (optional, but nice)
-    if (result.length > 0 && result[result.length - 1].roman === rand && Math.random() > 0.3) {
+    if (result.length > 0 && result[result.length - 1]?.roman === rand && Math.random() > 0.3) {
         continue;
     }
 

@@ -7,7 +7,6 @@ import { audioService } from '../services/audioService';
 import { fetchFeedback } from '../services/contentService';
 import { getChordNotes } from '../services/theoryService';
 import { useTranslation } from '../i18n/I18nContext';
-import { TxKey } from '../i18n/types';
 
 const CHORD_SHORTCUTS = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k'];
 
@@ -141,7 +140,7 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
     const presets: SynthPreset[] = ['PIANO', 'VANGELIS', 'JUMP'];
     const currentIndex = presets.indexOf(currentPreset);
     const nextIndex = (currentIndex + 1) % presets.length;
-    setCurrentPreset(presets[nextIndex]);
+    setCurrentPreset(presets[nextIndex] as SynthPreset);
   };
 
   const getPresetColor = (): string => {
@@ -293,7 +292,7 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
             const userChord = selectedSlots[idx];
             if (userChord) playSingleChord(userChord);
           } else {
-            const correctChord = gameState.currentProgression?.chords[idx].roman;
+            const correctChord = gameState.currentProgression?.chords[idx]?.roman;
             if (correctChord) playSingleChord(correctChord);
           }
           return;
@@ -422,8 +421,8 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
       {/* Slots */}
       <div className="grid grid-cols-4 gap-3 md:gap-6 mb-10 w-full max-w-3xl px-2">
         {selectedSlots.map((slot, idx) => {
-          const isCorrectGuess = gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx].roman === slot;
-          const isWrongGuess = gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx].roman !== slot && slot !== null;
+          const isCorrectGuess = gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx]?.roman === slot;
+          const isWrongGuess = gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx]?.roman !== slot && slot !== null;
 
           return (
             <div key={idx} className="flex flex-col items-center relative">
@@ -450,18 +449,18 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
                 )}
               </div>
 
-              {gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx].roman !== slot && (
+              {gameState.status === 'FEEDBACK' && gameState.currentProgression?.chords[idx]?.roman !== slot && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    const correct = gameState.currentProgression?.chords[idx].roman;
+                    const correct = gameState.currentProgression?.chords[idx]?.roman;
                     if (correct) playSingleChord(correct);
                   }}
                   className="absolute -bottom-10 left-0 right-0 animate-slide-up cursor-pointer group/correct hover:scale-105 transition-transform"
                   title={t('game.playCorrect')}
                 >
                   <span className="flex items-center justify-center gap-2 text-green-400 text-sm font-mono font-bold bg-slate-900/90 px-3 py-2 rounded-lg border border-green-500/30 shadow-lg">
-                    <span>{gameState.currentProgression?.chords[idx].roman}</span>
+                    <span>{gameState.currentProgression?.chords[idx]?.roman}</span>
                     <span className="text-xs opacity-60 group-hover/correct:opacity-100">🔊</span>
                   </span>
                   <ShortcutBadge k={`${idx + 1}`} className="right-0 -top-2 bg-green-900/80 text-green-200 border-green-700/50 opacity-0 group-hover/correct:opacity-100 transition-opacity" />
@@ -478,13 +477,13 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3 mb-8">
             {gameState.level?.availableChords.map((chord, idx) => (
               <button
-                key={chord}
+                key={chord || ""}
                 onClick={() => handleSelectChord(chord)}
                 disabled={isFull(selectedSlots)}
                 className="relative p-3 md:p-4 bg-slate-700 hover:bg-slate-600 active:bg-slate-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-slate-900/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 border border-slate-600 hover:border-indigo-400 group"
               >
-                <ShortcutBadge k={CHORD_SHORTCUTS[idx]} className="top-1 right-1 opacity-60 group-hover:opacity-100" />
-                {chord}
+                <ShortcutBadge k={CHORD_SHORTCUTS[idx] || ""} className="top-1 right-1 opacity-60 group-hover:opacity-100" />
+                {chord || ""}
               </button>
             ))}
           </div>

@@ -56,8 +56,8 @@ export const fetchFeedback = async (
   // but strict typing would require ensuring correctChord is a keyof descs.
   // Given chords are dynamic strings, we check existence.
   
-  const correctDesc = (correctChord in descs) ? (descs as Record<string, string>)[correctChord] : t('feedback.defaultCorrect');
-  const userDesc = (userChord in descs) ? (descs as Record<string, string>)[userChord] : t('feedback.defaultIncorrect');
+  const correctDesc = (correctChord && correctChord in descs) ? (descs as Record<string, string>)[correctChord] : t('feedback.defaultCorrect');
+  const userDesc = (userChord && userChord in descs) ? (descs as Record<string, string>)[userChord] : t('feedback.defaultIncorrect');
 
   // 2. Dynamic Feedback Construction
   const intro = t('feedback.close', { index: errorIndex + 1 });
