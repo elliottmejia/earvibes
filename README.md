@@ -2,6 +2,10 @@
 
 EarVibes is an interactive, open-source ear training application designed to help musicians master chord progressions through adaptive lessons and randomized quizzes. Built with modern web technologies, it functions as a Progressive Web App (PWA) that can be installed on desktop and mobile devices.
 
+## Live Demo
+
+The application is live at: [https://wilsonnet.github.io/earvibes](https://wilsonnet.github.io/earvibes)
+
 ## Features
 
 *   **Interactive Ear Training**: Listen to 4-chord progressions and identify them by ear.
