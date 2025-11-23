@@ -1,20 +1,17 @@
-
 import * as Tone from 'tone';
-import { SynthPreset } from '../types';
+import type { SynthPreset } from '../types';
 
 class AudioService {
   private vangelisSynth: Tone.PolySynth | null = null;
   private jumpSynth: Tone.PolySynth | null = null;
   private pianoSynth: Tone.PolySynth | null = null;
-  
+
   private reverb: Tone.Reverb | null = null; // Hall for Vangelis/Jump
   private roomReverb: Tone.Reverb | null = null; // Room for Piano
   private delay: Tone.FeedbackDelay | null = null;
-  
+
   private currentPreset: SynthPreset = 'PIANO';
   private isInitialized: boolean = false;
-
-  constructor() {}
 
   public async init(): Promise<void> {
     if (this.isInitialized) return;
@@ -22,7 +19,7 @@ class AudioService {
     await Tone.start();
 
     // 1. Create Effects Chains
-    
+
     // Chain A: Lush Hall Reverb + Delay (For Vangelis, Jump)
     this.reverb = new Tone.Reverb({
       decay: 4.5,
@@ -32,7 +29,7 @@ class AudioService {
     await this.reverb.generate();
 
     this.delay = new Tone.FeedbackDelay({
-      delayTime: "8n.", // Dotted 8th note
+      delayTime: '8n.', // Dotted 8th note
       feedback: 0.25,
       wet: 0.15,
     });
@@ -50,7 +47,7 @@ class AudioService {
     this.vangelisSynth = new Tone.PolySynth(Tone.MonoSynth, {
       volume: -8,
       oscillator: {
-        type: "fatsawtooth",
+        type: 'fatsawtooth',
         count: 3,
         spread: 25,
       },
@@ -62,7 +59,7 @@ class AudioService {
       },
       filter: {
         Q: 1,
-        type: "lowpass",
+        type: 'lowpass',
         rolloff: -12,
       },
       filterEnvelope: {
@@ -77,12 +74,12 @@ class AudioService {
     });
     this.vangelisSynth.maxPolyphony = 12; // Optimized for 4-note chords (allows 3 simultaneous chords)
     this.vangelisSynth.connect(this.delay);
-    
+
     // 3. JUMP Synth (Oberheim OB-X Style)
     this.jumpSynth = new Tone.PolySynth(Tone.MonoSynth, {
       volume: -8,
       oscillator: {
-        type: "sawtooth",
+        type: 'sawtooth',
       },
       envelope: {
         attack: 0.01,
@@ -92,7 +89,7 @@ class AudioService {
       },
       filter: {
         Q: 3,
-        type: "lowpass",
+        type: 'lowpass',
         rolloff: -24,
       },
       filterEnvelope: {
@@ -112,7 +109,7 @@ class AudioService {
     this.pianoSynth = new Tone.PolySynth(Tone.Synth, {
       volume: -5,
       oscillator: {
-        type: "triangle",
+        type: 'triangle',
       },
       envelope: {
         attack: 0.005,
@@ -144,7 +141,7 @@ class AudioService {
 
   public async playNotes(notes: string[], duration: number, timeOffset: number = 0): Promise<void> {
     await this.init();
-    
+
     const synth = this.getActiveSynth();
     if (!synth) return;
 
@@ -156,7 +153,7 @@ class AudioService {
 
   public async playProgression(notesMatrix: string[][], tempoBPM: number = 80): Promise<void> {
     await this.init();
-    
+
     const synth = this.getActiveSynth();
     if (!synth) return;
 
@@ -166,8 +163,8 @@ class AudioService {
 
     // Schedule all chords
     notesMatrix.forEach((chordNotes, index) => {
-      const time = now + (index * chordDuration);
-      
+      const time = now + index * chordDuration;
+
       // Trigger the chord
       synth.triggerAttackRelease(chordNotes, chordDuration, time);
     });
@@ -176,10 +173,13 @@ class AudioService {
     return new Promise<void>((resolve) => {
       const totalTime = notesMatrix.length * chordDuration;
       // Piano decays, Synths release
-      const tailTime = (this.currentPreset === 'PIANO') ? 1.5 : 2.5;
-      setTimeout(() => {
-        resolve();
-      }, (totalTime + tailTime) * 1000);
+      const tailTime = this.currentPreset === 'PIANO' ? 1.5 : 2.5;
+      setTimeout(
+        () => {
+          resolve();
+        },
+        (totalTime + tailTime) * 1000
+      );
     });
   }
 }

@@ -1,9 +1,8 @@
-
-import React from 'react';
+import type React from 'react';
 import { LEVELS, REAL_SONGS } from '../constants';
-import { LevelConfig, RealSong } from '../types';
-import { Button } from './Button';
 import { useTranslation } from '../i18n/I18nContext';
+import type { LevelConfig, RealSong } from '../types';
+import { Button } from './Button';
 
 interface Props {
   onSelectLevel: (level: LevelConfig) => void;
@@ -14,31 +13,31 @@ export const LevelSelector: React.FC<Props> = ({ onSelectLevel, onSelectRealSong
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-6xl mx-auto p-6 w-full">
-      
+    <div className="mx-auto w-full max-w-6xl p-6">
       {/* Synthetic Levels */}
       <div className="mb-16">
-        <h2 className="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+        <h2 className="mb-8 bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-center font-bold text-3xl text-transparent">
           {t('home.selectDifficulty')}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {LEVELS.map((level) => {
             const titleKey = `levelTitles.${level.id}` as const;
             const descKey = `levelDescs.${level.id}` as const;
 
             return (
-              <div key={level.id} className="bg-slate-800/50 border border-slate-700 p-6 rounded-xl hover:border-indigo-500/50 transition-all hover:shadow-2xl hover:shadow-indigo-500/10 group flex flex-col h-full">
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-indigo-400 text-sm font-mono font-bold tracking-wider">
+              <div
+                key={level.id}
+                className="group flex h-full flex-col rounded-xl border border-slate-700 bg-slate-800/50 p-6 transition-all hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10"
+              >
+                <div className="mb-4 flex items-start justify-between">
+                  <span className="font-bold font-mono text-indigo-400 text-sm tracking-wider">
                     {t('home.levelLabel', { id: level.id })}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-indigo-300 transition-colors">
+                <h3 className="mb-2 font-bold text-white text-xl transition-colors group-hover:text-indigo-300">
                   {t(titleKey)}
                 </h3>
-                <p className="text-slate-400 text-sm mb-6 flex-grow">
-                  {t(descKey)}
-                </p>
+                <p className="mb-6 flex-grow text-slate-400 text-sm">{t(descKey)}</p>
                 <Button onClick={() => onSelectLevel(level)} fullWidth className="mt-auto">
                   {t('home.startTraining')}
                 </Button>
@@ -50,49 +49,55 @@ export const LevelSelector: React.FC<Props> = ({ onSelectLevel, onSelectRealSong
 
       {/* Real Songs Section */}
       <div className="mb-8">
-         <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="h-px bg-slate-700 flex-grow max-w-[100px]"></div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-3">
-                <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">New</span>
-                {t('home.realSongsTitle')}
-            </h2>
-            <div className="h-px bg-slate-700 flex-grow max-w-[100px]"></div>
-         </div>
-         
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {REAL_SONGS.map((song) => (
-                <div key={song.id} className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-red-500/50 transition-all group flex flex-col md:flex-row">
-                    <div className="md:w-2/5 relative h-48 md:h-auto bg-black">
-                         <img 
-                            src={`https://img.youtube.com/vi/${song.youtubeId}/mqdefault.jpg`} 
-                            alt={song.title}
-                            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
-                         />
-                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1"></div>
-                            </div>
-                         </div>
-                    </div>
-                    <div className="p-5 flex flex-col justify-center md:w-3/5">
-                        <div className="flex justify-between items-start mb-2">
-                             <h3 className="text-xl font-bold text-white">{song.title}</h3>
-                             <span className="text-[10px] font-mono border border-slate-600 px-1.5 py-0.5 rounded text-slate-400">{song.key}</span>
-                        </div>
-                        <p className="text-indigo-400 text-sm font-medium mb-4">{song.artist}</p>
-                        <Button 
-                            onClick={() => onSelectRealSong(song)} 
-                            variant="secondary" 
-                            className="mt-auto hover:bg-red-600 hover:text-white border-none"
-                        >
-                            {t('home.startChallenge')}
-                        </Button>
-                    </div>
-                </div>
-            ))}
-         </div>
-      </div>
+        <div className="mb-8 flex items-center justify-center gap-4">
+          <div className="h-px max-w-[100px] flex-grow bg-slate-700"></div>
+          <h2 className="flex items-center gap-3 font-bold text-2xl text-white md:text-3xl">
+            <span className="rounded bg-red-600 px-2 py-1 font-bold text-white text-xs uppercase tracking-wider">
+              New
+            </span>
+            {t('home.realSongsTitle')}
+          </h2>
+          <div className="h-px max-w-[100px] flex-grow bg-slate-700"></div>
+        </div>
 
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
+          {REAL_SONGS.map((song) => (
+            <div
+              key={song.id}
+              className="group flex flex-col overflow-hidden rounded-xl border border-slate-700 bg-slate-900 transition-all hover:border-red-500/50 md:flex-row"
+            >
+              <div className="relative h-48 bg-black md:h-auto md:w-2/5">
+                <img
+                  src={`https://img.youtube.com/vi/${song.youtubeId}/mqdefault.jpg`}
+                  alt={song.title}
+                  className="h-full w-full object-cover opacity-60 transition-opacity group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur transition-transform group-hover:scale-110">
+                    <div className="ml-1 h-0 w-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[10px] border-l-white"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center p-5 md:w-3/5">
+                <div className="mb-2 flex items-start justify-between">
+                  <h3 className="font-bold text-white text-xl">{song.title}</h3>
+                  <span className="rounded border border-slate-600 px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
+                    {song.key}
+                  </span>
+                </div>
+                <p className="mb-4 font-medium text-indigo-400 text-sm">{song.artist}</p>
+                <Button
+                  onClick={() => onSelectRealSong(song)}
+                  variant="secondary"
+                  className="mt-auto border-none hover:bg-red-600 hover:text-white"
+                >
+                  {t('home.startChallenge')}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

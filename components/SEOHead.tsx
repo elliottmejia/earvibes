@@ -1,5 +1,5 @@
-
-import React, { useEffect } from 'react';
+import type React from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from '../i18n/I18nContext';
 
 export const SEOHead: React.FC = () => {
@@ -19,9 +19,12 @@ export const SEOHead: React.FC = () => {
         // If it doesn't exist, create it (simplified handling for common types)
         element = document.createElement('meta');
         if (selector.startsWith('meta[name=')) {
-           element.setAttribute('name', selector.replace('meta[name="', '').replace('"]', ''));
+          element.setAttribute('name', selector.replace('meta[name="', '').replace('"]', ''));
         } else if (selector.startsWith('meta[property=')) {
-           element.setAttribute('property', selector.replace('meta[property="', '').replace('"]', ''));
+          element.setAttribute(
+            'property',
+            selector.replace('meta[property="', '').replace('"]', '')
+          );
         }
         document.head.appendChild(element);
       }
@@ -46,7 +49,6 @@ export const SEOHead: React.FC = () => {
     if (language === 'pt') localeStr = 'pt_BR';
     if (language === 'ja') localeStr = 'ja_JP';
     setMeta('meta[property="og:locale"]', localeStr);
-
   }, [language, t]);
 
   return null;

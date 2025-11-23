@@ -1,187 +1,193 @@
-
-import { TranslationSource } from '../types';
+import type { TranslationSource } from '../types';
 
 export const pt: TranslationSource = {
   common: {
-    appName: "EarVibes",
-    offline: "Modo Offline",
-    exit: "Sair",
-    score: "Pontuação",
-    back: "Voltar",
-    loading: "Carregando...",
-    language: "Idioma",
-    selectLanguage: "Selecionar Idioma"
+    appName: 'EarVibes',
+    offline: 'Modo Offline',
+    exit: 'Sair',
+    score: 'Pontuação',
+    back: 'Voltar',
+    loading: 'Carregando...',
+    language: 'Idioma',
+    selectLanguage: 'Selecionar Idioma',
   },
   seo: {
-    title: "EarVibes - Treinamento Auditivo de Acordes",
-    description: "Domine progressões de acordes com EarVibes. Treinamento auditivo interativo para músicos. Aprenda harmonia Jazz, Rock, Pop e City Pop.",
-    keywords: "treinamento auditivo, teoria musical, progressões de acordes, harmonia jazz, city pop, ouvido absoluto, ferramentas para músicos"
+    title: 'EarVibes - Treinamento Auditivo de Acordes',
+    description:
+      'Domine progressões de acordes com EarVibes. Treinamento auditivo interativo para músicos. Aprenda harmonia Jazz, Rock, Pop e City Pop.',
+    keywords:
+      'treinamento auditivo, teoria musical, progressões de acordes, harmonia jazz, city pop, ouvido absoluto, ferramentas para músicos',
   },
   home: {
-    selectDifficulty: "Selecione a Dificuldade",
-    startTraining: "Iniciar Treino",
-    levelLabel: "NÍVEL {{id}}",
-    realSongsTitle: "Desafios Reais",
-    startChallenge: "Iniciar Desafio"
+    selectDifficulty: 'Selecione a Dificuldade',
+    startTraining: 'Iniciar Treino',
+    levelLabel: 'NÍVEL {{id}}',
+    realSongsTitle: 'Desafios Reais',
+    startChallenge: 'Iniciar Desafio',
   },
   game: {
-    playAudio: "Tocar Áudio",
-    playing: "Tocando...",
-    listenPrompt: "Ouça a progressão de 4 acordes",
-    submit: "Enviar Progressão",
-    next: "Próxima Progressão →",
-    analysis: "Análise",
-    clickToCompare: "Clique nos acordes acima para comparar sons",
-    analyzing: "Analisando...",
-    undo: "Desfazer",
-    exitConfirm: "Tem certeza que deseja sair?",
-    toggleSynth: "Alternar Sintetizador (Atalho: T)",
-    playCorrect: "Clique para ouvir o acorde correto",
-    synth: "Sintetizador"
+    playAudio: 'Tocar Áudio',
+    playing: 'Tocando...',
+    listenPrompt: 'Ouça a progressão de 4 acordes',
+    submit: 'Enviar Progressão',
+    next: 'Próxima Progressão →',
+    analysis: 'Análise',
+    clickToCompare: 'Clique nos acordes acima para comparar sons',
+    analyzing: 'Analisando...',
+    undo: 'Desfazer',
+    exitConfirm: 'Tem certeza que deseja sair?',
+    toggleSynth: 'Alternar Sintetizador (Atalho: T)',
+    playCorrect: 'Clique para ouvir o acorde correto',
+    synth: 'Sintetizador',
   },
   instructions: {
-    title: "Como Jogar",
-    step1: "Ouça a progressão de acordes tocada pela IA.",
-    step2: "Identifique os acordes de ouvido e selecione-os na ordem.",
-    step3: "Envie sua resposta para ver se estava correta.",
-    shortcutsTitle: "Atalhos de Teclado",
-    feedbackTitle: "Entendiendo o Feedback",
-    feedbackDesc: "Verde indica respostas corretas. Vermelho indica erros. No modo de feedback, você pode clicar nos acordes corretos revelados (abaixo dos slots) para compará-los com sua resposta."
+    title: 'Como Jogar',
+    step1: 'Ouça a progressão de acordes tocada pela IA.',
+    step2: 'Identifique os acordes de ouvido e selecione-os na ordem.',
+    step3: 'Envie sua resposta para ver se estava correta.',
+    shortcutsTitle: 'Atalhos de Teclado',
+    feedbackTitle: 'Entendiendo o Feedback',
+    feedbackDesc:
+      'Verde indica respostas corretas. Vermelho indica erros. No modo de feedback, você pode clicar nos acordes corretos revelados (abaixo dos slots) para compará-los com sua resposta.',
   },
   theory: {
-    title: "Aula de Teoria Musical",
-    startQuiz: "Entendi, Iniciar Quiz!",
-    generating: "Gerando...",
-    notFound: "Aula Não Encontrada",
-    notFoundDesc: "Selecione um nível válido para continuar."
+    title: 'Aula de Teoria Musical',
+    startQuiz: 'Entendi, Iniciar Quiz!',
+    generating: 'Gerando...',
+    notFound: 'Aula Não Encontrada',
+    notFoundDesc: 'Selecione um nível válido para continuar.',
   },
   feedback: {
-    perfect: "### Perfeito! 🎉\n\nVocê identificou a progressão corretamente. Seu ouvido está ficando mais afiado!",
-    close: "### Quase, mas cuidado com o acorde #{{index}}",
-    comparison: "\nVocê escolheu **{{user}}**, que {{userDesc}}.\n\nNo entanto, a resposta foi **{{correct}}**, que {{correctDesc}}.",
-    tip: "\n\n*Tente ouvir novamente a diferença entre **{{user}}** e **{{correct}}** na reprodução.*",
-    defaultCorrect: "é a resposta correta",
-    defaultIncorrect: "está incorreto aqui"
+    perfect:
+      '### Perfeito! 🎉\n\nVocê identificou a progressão corretamente. Seu ouvido está ficando mais afiado!',
+    close: '### Quase, mas cuidado com o acorde #{{index}}',
+    comparison:
+      '\nVocê escolheu **{{user}}**, que {{userDesc}}.\n\nNo entanto, a resposta foi **{{correct}}**, que {{correctDesc}}.',
+    tip: '\n\n*Tente ouvir novamente a diferença entre **{{user}}** e **{{correct}}** na reprodução.*',
+    defaultCorrect: 'é a resposta correta',
+    defaultIncorrect: 'está incorreto aqui',
   },
   levelTitles: {
-    "1": "Nível 1: Maior Diatônico",
-    "2": "Nível 2: Menor Natural",
-    "3": "Nível 3: A Dominante 7",
-    "4": "Nível 4: Rock & Mixolídio",
-    "5": "Nível 5: Empréstimo Modal",
-    "6": "Nível 6: Dominantes Secundários (7ths)",
-    "7": "Nível 7: Os Beatles e o Quatro Menor",
-    "8": "Nível 8: Psicodelia e Cromatismo",
-    "9": "Nível 9: Jazz e Substituição de Trítono (Tétrades)",
-    "10": "Nível 10: O Modo Dórico (Coltrane)",
-    "11": "Nível 11: Royal Road (Tétrades J-Pop)",
-    "12": "Nível 12: City Pop e Slash Chords"
+    '1': 'Nível 1: Maior Diatônico',
+    '2': 'Nível 2: Menor Natural',
+    '3': 'Nível 3: A Dominante 7',
+    '4': 'Nível 4: Rock & Mixolídio',
+    '5': 'Nível 5: Empréstimo Modal',
+    '6': 'Nível 6: Dominantes Secundários (7ths)',
+    '7': 'Nível 7: Os Beatles e o Quatro Menor',
+    '8': 'Nível 8: Psicodelia e Cromatismo',
+    '9': 'Nível 9: Jazz e Substituição de Trítono (Tétrades)',
+    '10': 'Nível 10: O Modo Dórico (Coltrane)',
+    '11': 'Nível 11: Royal Road (Tétrades J-Pop)',
+    '12': 'Nível 12: City Pop e Slash Chords',
   },
   levelDescs: {
-    "1": "Aprenda os blocos fundamentais da música pop e clássica usando a escala Maior.",
-    "2": "Explore os sons mais sombrios e emocionais da escala Menor.",
-    "3": "Introduzindo tensão com o acorde V7.",
-    "4": "Domine o som clássico do rock com o acorde bVII (Bemol 7).",
-    "5": "Acordes emprestados da escala menor (bIII, bVI) para progressões épicas.",
-    "6": "Harmonia avançada usando acordes de 7ª (II7, III7, VI7) para criar fortes atrações para outras tonalidades.",
-    "7": "O som sentimental do Quatro Menor (iv) encontrado em baladas clássicas.",
-    "8": "Acordes aumentados e dominantes instáveis (I+, I7) para cores psicodélicas.",
-    "9": "Harmonia de Jazz sofisticada usando acordes de 7ª (tétrades) e a Substituição de Trítono.",
-    "10": "O som modal de 'My Favorite Things' de John Coltrane.",
-    "11": "A 'Oudou Shinkou' (IVM7-V7-iii7-vi7), a progressão dourada do J-Pop usando ricas tétrades.",
-    "12": "O estilo harmônico sofisticado de Tatsuro Yamashita, com Slash Chords e a progressão 'Just The Two Of Us'."
+    '1': 'Aprenda os blocos fundamentais da música pop e clássica usando a escala Maior.',
+    '2': 'Explore os sons mais sombrios e emocionais da escala Menor.',
+    '3': 'Introduzindo tensão com o acorde V7.',
+    '4': 'Domine o som clássico do rock com o acorde bVII (Bemol 7).',
+    '5': 'Acordes emprestados da escala menor (bIII, bVI) para progressões épicas.',
+    '6': 'Harmonia avançada usando acordes de 7ª (II7, III7, VI7) para criar fortes atrações para outras tonalidades.',
+    '7': 'O som sentimental do Quatro Menor (iv) encontrado em baladas clássicas.',
+    '8': 'Acordes aumentados e dominantes instáveis (I+, I7) para cores psicodélicas.',
+    '9': 'Harmonia de Jazz sofisticada usando acordes de 7ª (tétrades) e a Substituição de Trítono.',
+    '10': "O som modal de 'My Favorite Things' de John Coltrane.",
+    '11': "A 'Oudou Shinkou' (IVM7-V7-iii7-vi7), a progressão dourada do J-Pop usando ricas tétrades.",
+    '12': "O estilo harmônico sofisticado de Tatsuro Yamashita, com Slash Chords e a progressão 'Just The Two Of Us'.",
   },
   chordDescriptions: {
     MAJOR: {
-        "I": "é o acorde 'Casa', sentindo-se estável, resolvido e fundamentado",
-        "ii": "é um acorde menor que parece melancólico, agindo como uma ponte para a dominante",
-        "iii": "é um acorde menor com um som agridoce e de transição",
-        "IV": "é um acorde maior que parece brilhante, aberto e eleva a energia para longe de casa",
-        "V": "é a Dominante, criando forte tensão que exige um retorno à tônica",
-        "V7": "adiciona tensão distinta ao acorde V, puxando urgentemente para casa",
-        "vi": "é um acorde menor que parece emocional e muitas vezes atua como uma resolução 'enganosa'",
-        "vii°": "é um acorde diminuto que soa instável, dissonante e puxa fortemente para I"
+      I: "é o acorde 'Casa', sentindo-se estável, resolvido e fundamentado",
+      ii: 'é um acorde menor que parece melancólico, agindo como uma ponte para a dominante',
+      iii: 'é um acorde menor com um som agridoce e de transição',
+      IV: 'é um acorde maior que parece brilhante, aberto e eleva a energia para longe de casa',
+      V: 'é a Dominante, criando forte tensão que exige um retorno à tônica',
+      V7: 'adiciona tensão distinta ao acorde V, puxando urgentemente para casa',
+      vi: "é um acorde menor que parece emocional e muitas vezes atua como uma resolução 'enganosa'",
+      'vii°': 'é um acorde diminuto que soa instável, dissonante e puxa fortemente para I',
     },
     MINOR: {
-        "i": "é o acorde 'Casa', sentindo-se estável, mas sério ou triste",
-        "ii°": "é um acorde diminuto adicionando tensão sombria, muitas vezes preparando para a dominante",
-        "III": "é o Relativo Maior, oferecendo um momento de brilho e alívio",
-        "iv": "é um acorde menor que parece triste, pesado e emocional",
-        "v": "é a dominante menor, parecendo temperamental e mais suave que o V maior",
-        "V": "é a dominante maior, proporcionando um forte puxão harmônico de volta à raiz menor",
-        "VI": "é um acorde maior que parece épico, heróico ou como uma surpresa 'enganosa'",
-        "VII": "é um acorde maior que parece ousado, muitas vezes usado em hinos de rock",
-        "vii°": "é um acorde diminuto que é muito instável"
+      i: "é o acorde 'Casa', sentindo-se estável, mas sério ou triste",
+      'ii°':
+        'é um acorde diminuto adicionando tensão sombria, muitas vezes preparando para a dominante',
+      III: 'é o Relativo Maior, oferecendo um momento de brilho e alívio',
+      iv: 'é um acorde menor que parece triste, pesado e emocional',
+      v: 'é a dominante menor, parecendo temperamental e mais suave que o V maior',
+      V: 'é a dominante maior, proporcionando um forte puxão harmônico de volta à raiz menor',
+      VI: "é um acorde maior que parece épico, heróico ou como uma surpresa 'enganosa'",
+      VII: 'é um acorde maior que parece ousado, muitas vezes usado em hinos de rock',
+      'vii°': 'é um acorde diminuto que é muito instável',
     },
     MIXOLYDIAN: {
-        "I": "é o acorde 'Casa'",
-        "IV": "é a subdominante",
-        "V": "é a dominante",
-        "bVII": "é o acorde 'Rock' (Bemol 7), parecendo rebelde e bluesy, resolvendo em I",
-        "vi": "é o relativo menor"
+      I: "é o acorde 'Casa'",
+      IV: 'é a subdominante',
+      V: 'é a dominante',
+      bVII: "é o acorde 'Rock' (Bemol 7), parecendo rebelde e bluesy, resolvendo em I",
+      vi: 'é o relativo menor',
     },
     MODAL_INTERCHANGE: {
-        "I": "é o início",
-        "IV": "é a subdominante",
-        "V": "é a dominante",
-        "bIII": "é um acorde maior emprestado que soa 'durão' ou 'bluesy'",
-        "bVI": "é o acorde 'Épico' emprestado do menor, soando grandioso e mágico",
-        "bVII": "é o Bemol 7 emprestado, comum no rock"
+      I: 'é o início',
+      IV: 'é a subdominante',
+      V: 'é a dominante',
+      bIII: "é um acorde maior emprestado que soa 'durão' ou 'bluesy'",
+      bVI: "é o acorde 'Épico' emprestado do menor, soando grandioso e mágico",
+      bVII: 'é o Bemol 7 emprestado, comum no rock',
     },
     SECONDARY_DOMINANT: {
-        "I": "é o início",
-        "IV": "é subdominante",
-        "V": "é dominante",
-        "II7": "é um II Dominante (V7/V), puxando fortemente para V",
-        "III7": "é um III Dominante (V7/vi), criando um forte puxão para o relativo menor",
-        "VI7": "é um VI Dominante (V7/ii), criando uma virada brilhante para o acorde ii"
+      I: 'é o início',
+      IV: 'é subdominante',
+      V: 'é dominante',
+      II7: 'é um II Dominante (V7/V), puxando fortemente para V',
+      III7: 'é um III Dominante (V7/vi), criando um forte puxão para o relativo menor',
+      VI7: 'é um VI Dominante (V7/ii), criando uma virada brilhante para o acorde ii',
     },
     MINOR_PLAGAL: {
-        "I": "é o início",
-        "IV": "é a subdominante brilhante",
-        "iv": "é o Quatro Menor, criando um colapso sentimental e nostálgico de volta para casa",
-        "V": "é a dominante",
-        "vi": "é o relativo menor"
+      I: 'é o início',
+      IV: 'é a subdominante brilhante',
+      iv: 'é o Quatro Menor, criando um colapso sentimental e nostálgico de volta para casa',
+      V: 'é a dominante',
+      vi: 'é o relativo menor',
     },
     CHROMATIC: {
-        "I": "é o início",
-        "V": "é a dominante",
-        "vi": "é o relativo menor",
-        "I+": "é o I Aumentado, soando onírico, flutuante e instável",
-        "I7": "é o I Dominante, adicionando uma tensão bluesy que puxa para IV"
+      I: 'é o início',
+      V: 'é a dominante',
+      vi: 'é o relativo menor',
+      'I+': 'é o I Aumentado, soando onírico, flutuante e instável',
+      I7: 'é o I Dominante, adicionando uma tensão bluesy que puxa para IV',
     },
     TRITONE_SUB: {
-        "IM7": "é a tônica Maior 7, soando exuberante e jazzy",
-        "ii7": "é o ii menor 7, a preparação padrão do jazz",
-        "V7": "é a dominante padrão",
-        "bII7": "é a Substituição de Trítono, uma dominante cromática picante que desliza para I",
-        "vi7": "é o relativo menor 7"
+      IM7: 'é a tônica Maior 7, soando exuberante e jazzy',
+      ii7: 'é o ii menor 7, a preparação padrão do jazz',
+      V7: 'é a dominante padrão',
+      bII7: 'é a Substituição de Trítono, uma dominante cromática picante que desliza para I',
+      vi7: 'é o relativo menor 7',
     },
     DORIAN: {
-        "i": "é a tônica menor",
-        "IV": "é o IV Maior, o som 'Dórico' característico (mais brilhante que o iv menor)",
-        "ii": "é o ii menor (diferente do ii° diminuto no menor natural)",
-        "bVII": "é o acorde maior subtônico",
-        "III": "é o relativo maior"
+      i: 'é a tônica menor',
+      IV: "é o IV Maior, o som 'Dórico' característico (mais brilhante que o iv menor)",
+      ii: 'é o ii menor (diferente do ii° diminuto no menor natural)',
+      bVII: 'é o acorde maior subtônico',
+      III: 'é o relativo maior',
     },
     OUDOU: {
-        "IVM7": "é a subdominante Maior 7, soando emocional e sofisticada",
-        "V7": "é a dominante 7, construindo tensão",
-        "iii7": "é a mediante menor 7, proporcionando profunda nostalgia (Setsunai)",
-        "vi7": "é o relativo menor 7",
-        "IM7": "é a tônica Maior 7"
+      IVM7: 'é a subdominante Maior 7, soando emocional e sofisticada',
+      V7: 'é a dominante 7, construindo tensão',
+      iii7: 'é a mediante menor 7, proporcionando profunda nostalgia (Setsunai)',
+      vi7: 'é o relativo menor 7',
+      IM7: 'é a tônica Maior 7',
     },
     CITY_POP: {
-        "IM7": "é a tônica Maior 7 estável, frequentemente usada para 'vamping'",
-        "IVM7": "é a subdominante Maior 7 exuberante, muitas vezes o acorde inicial no City Pop",
-        "III7": "é uma Dominante 7 que puxa fortemente para vi7, criando tensão emocional",
-        "vi7": "é a menor 7, muitas vezes seguindo III7",
-        "Gm7": "é o v menor, normalmente aparecendo antes de C7 para criar uma modulação suave",
-        "IV/V": "é a Dominante 'Slash Chord' (F/G), um som característico de Tatsuro que parece urbano e flutuante"
-    }
+      IM7: "é a tônica Maior 7 estável, frequentemente usada para 'vamping'",
+      IVM7: 'é a subdominante Maior 7 exuberante, muitas vezes o acorde inicial no City Pop',
+      III7: 'é uma Dominante 7 que puxa fortemente para vi7, criando tensão emocional',
+      vi7: 'é a menor 7, muitas vezes seguindo III7',
+      Gm7: 'é o v menor, normalmente aparecendo antes de C7 para criar uma modulação suave',
+      'IV/V':
+        "é a Dominante 'Slash Chord' (F/G), um som característico de Tatsuro que parece urbano e flutuante",
+    },
   },
   lessons: {
-    "1": `
+    '1': `
 ## Nível 1: A Base da Escala Maior
 
 **Conceito**
@@ -203,7 +209,7 @@ Ouça o movimento **V → I**. Soa como "O Fim" de uma frase.
 2. **Stand By Me** - Ben E. King
 3. **I'm Yours** - Jason Mraz
 `,
-    "2": `
+    '2': `
 ## Nível 2: A Escala Menor Natural
 
 **Conceito**
@@ -224,7 +230,7 @@ Confundindo **i** e **VI**? O **i** parece descanso. O **VI** parece uma elevaç
 2. **All Along the Watchtower** - Jimi Hendrix
 3. **Billie Jean** - Michael Jackson
 `,
-    "3": `
+    '3': `
 ## Nível 3: A Dominante 7 (V7)
 
 **Conceito**
@@ -245,7 +251,7 @@ Ouça um "twang" ou um som "bluesy" no acorde V. Essa é a 7ª nota!
 2. **Twist and Shout** - The Beatles
 3. **Brown Eyed Girl** - Van Morrison
 `,
-    "4": `
+    '4': `
 ## Nível 4: Rock & O Modo Mixolídio
 
 **Conceito**
@@ -265,7 +271,7 @@ Se você ouvir um acorde maior que soa mais grave que a raiz, mas resolve podero
 2. **Sweet Home Alabama** - Lynyrd Skynyrd
 3. **Royals** - Lorde
 `,
-    "5": `
+    '5': `
 ## Nível 5: Empréstimo Modal (Acordes Emprestados)
 
 **Conceito**
@@ -283,7 +289,7 @@ Ouça acordes que soam "surpreendentes" ou mais sombrios do que o esperado, mas 
 2. **Crazy Train** - Ozzy Osbourne
 3. **Lithium** - Nirvana
 `,
-    "6": `
+    '6': `
 ## Nível 6: Dominantes Secundários (7ths)
 
 **Conceito**
@@ -302,7 +308,7 @@ Se você ouvir um acorde que soa como se "iluminasse" inesperadamente e tem uma 
 2. **Yesterday** - The Beatles (Usa VI7)
 3. **Don't Look Back in Anger** - Oasis (Usa III7)
 `,
-    "7": `
+    '7': `
 ## Nível 7: Os Beatles e o Quatro Menor
 
 **Conceito**
@@ -326,7 +332,7 @@ Ouça um acorde que parece uma "nuvem escura" passando sobre um dia ensolarado, 
 2. **Wake Me Up When September Ends** - Green Day
 3. **Desperado** - Eagles
 `,
-    "8": `
+    '8': `
 ## Nível 8: Psicodelia e Cromatismo
 
 **Conceito**
@@ -345,7 +351,7 @@ Em seus últimos anos, os Beatles exploraram sons mais estranhos usando acordes 
 2. **(Just Like) Starting Over** - John Lennon (I Aumentado)
 3. **I Saw Her Standing There** - The Beatles (I Dominante)
 `,
-    "9": `
+    '9': `
 ## Nível 9: Harmonia de Jazz e Substituição de Trítono
 
 **Conceito**
@@ -368,7 +374,7 @@ Ouça a linha de baixo. Se os acordes parecem "deslizar" cromaticamente para o a
 2. **Satin Doll** - Duke Ellington
 3. **The Simpsons Theme** (Cadência Final)
 `,
-    "10": `
+    '10': `
 ## Nível 10: O Modo Dórico (Estilo Coltrane)
 
 **Conceito**
@@ -391,7 +397,7 @@ Se a música é menor, mas você ouve um acorde Maior brilhante que não é o re
 2. **Breathe** - Pink Floyd
 3. **Oye Como Va** - Santana
 `,
-    "11": `
+    '11': `
 ## Nível 11: Royal Road (J-Pop Oudou Shinkou)
 
 **Conceito**
@@ -414,7 +420,7 @@ Ouça uma progressão que sobe, mas depois toma um rumo triste e nostálgico (ii
 2. **Robinson** - Spitz
 3. **Hanabi** - Mr.Children
 `,
-    "12": `
+    '12': `
 ## Nível 12: City Pop e Slash Chords
 
 **Conceito**
@@ -437,6 +443,6 @@ Ouça um som suave e brilhante onde a nota do baixo permanece em V enquanto os a
 1. **Sparkle** - Tatsuro Yamashita
 2. **Ride on Time** - Tatsuro Yamashita
 3. **Plastic Love** - Mariya Takeuchi (Arr. Tatsuro Yamashita)
-`
-  }
+`,
+  },
 };

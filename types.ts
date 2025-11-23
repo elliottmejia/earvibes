@@ -1,4 +1,3 @@
-
 export enum LevelType {
   MAJOR = 'MAJOR',
   MINOR = 'MINOR',
@@ -10,7 +9,7 @@ export enum LevelType {
   TRITONE_SUB = 'TRITONE_SUB',
   DORIAN = 'DORIAN',
   OUDOU = 'OUDOU',
-  CITY_POP = 'CITY_POP'
+  CITY_POP = 'CITY_POP',
 }
 
 export type SynthPreset = 'VANGELIS' | 'JUMP' | 'PIANO';

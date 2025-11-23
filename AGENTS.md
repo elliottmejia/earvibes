@@ -34,6 +34,39 @@ If you are using an AI agent to modify this codebase, please adhere to the follo
     *   Use the `cn()` utility from `lib/utils.ts` for combining classes, especially when dealing with conditional styling.
     *   Prefer semantic Tailwind classes over arbitrary values when possible.
 
+## Coding Task Completion Criteria
+
+A coding task is considered **complete** only when **both** of the following pass:
+
+1. **Lint Check**: `pnpm run lint` must pass with **zero errors** (warnings are acceptable)
+2. **Format Check**: `pnpm run format` must pass without any changes needed
+3. **Build Check**: `pnpm run build` must complete successfully without TypeScript errors
+
+**Declaration of Completion**: Only declare a coding task "done" or "completed" after verifying all three checks above pass. Do not declare completion based on visual inspection or partial fixes.
+
+## Biome Configuration for False Positives
+
+The following Biome rules may generate false positives and can be safely ignored in specific contexts:
+
+### Cognitive Complexity Rules
+- `complexity/noExcessiveCognitiveComplexity`: Some functions naturally have higher complexity and warnings are acceptable:
+  - Keyboard event handlers (multiple key combinations)
+  - Feedback generation functions (multiple conditional branches)
+  - Progression generation (complex switch statements)
+  These warnings are acceptable if the function is well-structured and readable.
+
+### Accessibility Rules  
+- `a11y/useAnchorContent`: Links with proper `aria-label` and `title` attributes that contain SVG icons are already accessible. This rule may flag false positives when accessible content is provided via ARIA attributes.
+
+### Type Safety Rules
+- `complexity/useLiteralKeys`: When working with dynamic object keys that come from string variables, bracket notation may be necessary even for literal-like access patterns.
+
+### Acceptable Warnings
+The following warnings are considered **acceptable** and don't need to be fixed:
+- Cognitive complexity warnings for the specific function types mentioned above
+- `useLiteralKeys` warnings when dynamic object access is required
+- `useAnchorContent` warnings when proper ARIA attributes are present
+
 ## Prompt Engineering Tips
 
 When asking an AI to generate new levels, use this structure:
