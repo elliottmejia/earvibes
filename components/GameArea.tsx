@@ -13,7 +13,7 @@ const CHORD_SHORTCUTS = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k'];
 // --- Sub Components ---
 
 const ShortcutBadge = ({ k, className = "" }: { k: string, className?: string }) => (
-  <span className={`absolute text-[10px] font-mono font-bold bg-slate-900/80 text-slate-400 border border-slate-600 rounded px-1.5 py-0.5 pointer-events-none select-none ${className}`}>
+  <span className={`absolute text-[10px] font-mono font-bold bg-slate-900/80 text-slate-400 border border-slate-600 rounded px-1.5 py-0.5 pointer-events-none select-none hidden sm:block ${className}`}>
     {k.toUpperCase()}
   </span>
 );
