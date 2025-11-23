@@ -98,11 +98,11 @@ class AudioService {
     this.vangelisSynth.maxPolyphony = 8; // Reduced from 12 for better performance
     this.vangelisSynth.connect(this.delay);
 
-    // 3. JUMP Synth (Oberheim OB-X Style) - Further Optimized
+    // 3. JUMP Synth (Oberheim OB-X Style) - Van Halen "Jump" Sound
     this.jumpSynth = new Tone.PolySynth(Tone.MonoSynth, {
       volume: -12, // Further reduced for headroom
       oscillator: {
-        type: 'square', // More CPU efficient than sawtooth
+        type: 'sawtooth', // Classic Van Halen "Jump" sawtooth wave
       },
       envelope: {
         attack: 0.005, // Faster attack for punchier response
@@ -111,17 +111,17 @@ class AudioService {
         release: 0.4, // Faster release for better voice management
       },
       filter: {
-        Q: 1.5, // Further reduced for CPU efficiency
+        Q: 2, // Increased resonance for classic synth sound
         type: 'lowpass',
         rolloff: -12, // Reduced from -24 for less CPU load
-        frequency: 800, // Fixed starting frequency
+        frequency: 1200, // Higher cutoff for brighter "Jump" sound
       },
       filterEnvelope: {
         attack: 0.01, // Faster filter response
         decay: 0.1, // Quicker filter decay
-        sustain: 0.2, // Lower sustain for cleaner sound
+        sustain: 0.3, // Higher sustain for more presence
         release: 0.5, // Faster filter release
-        baseFrequency: 400, // Optimized starting point
+        baseFrequency: 600, // Higher base frequency for brighter tone
         octaves: 2.5, // Reduced for less modulation overhead
         exponent: 1.5, // Smoother filter curve
       },
