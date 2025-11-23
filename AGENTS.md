@@ -24,12 +24,20 @@ If you are using an AI agent to modify this codebase, please adhere to the follo
 4.  **Audio Engine**: 
     *   Modifications to `audioService.ts` must respect the Tone.js lifecycle.
     *   Audio context must only resume/start after a user interaction event (click/keydown).
-5.  **State Management**: 
+5.  **Pattern Matching with ts-pattern**: 
+    *   **Prefer ts-pattern over switch statements and if-else chains** when working with enums, union types, or complex conditional logic.
+    *   Use `.exhaustive()` whenever possible to ensure all cases are handled at compile time.
+    *   Pattern matching is especially useful for:
+      - LevelType enum handling (see `services/theoryService.ts`)
+      - Language type guards and validation
+      - State machine transitions (GameState status changes)
+      - Audio preset selection and configuration
+6.  **State Management**: 
     *   The app uses a centralized `GameState` object in `App.tsx`.
     *   Avoid creating parallel state trees unless necessary for a specific isolated component.
-6.  **Context7 Integration**: Always use Context7 when you need code generation, setup or configuration steps, or library/API documentation. This means you should automatically use the Context7 MCP tools to resolve library id and get library docs without me having to explicitly ask.
-7.  **Development Server Management**: Always check if the development server is already running before starting it. If it's running, just access the website instead of starting a new server. Use `curl -s http://localhost:5173` or similar to check if server is responsive.
-8.  **Tailwind CSS Best Practices**: 
+7.  **Context7 Integration**: Always use Context7 when you need code generation, setup or configuration steps, or library/API documentation. This means you should automatically use the Context7 MCP tools to resolve library id and get library docs without me having to explicitly ask.
+8.  **Development Server Management**: Always check if the development server is already running before starting it. If it's running, just access the website instead of starting a new server. Use `curl -s http://localhost:5173` or similar to check if server is responsive.
+9.  **Tailwind CSS Best Practices**: 
     *   **Never use `!important`** in Tailwind classes. The project uses `tailwind-merge` which automatically handles class conflicts and precedence.
     *   Use the `cn()` utility from `lib/utils.ts` for combining classes, especially when dealing with conditional styling.
     *   Prefer semantic Tailwind classes over arbitrary values when possible.
@@ -52,8 +60,8 @@ The following Biome rules may generate false positives and can be safely ignored
 - `complexity/noExcessiveCognitiveComplexity`: Some functions naturally have higher complexity and warnings are acceptable:
   - Keyboard event handlers (multiple key combinations)
   - Feedback generation functions (multiple conditional branches)
-  - Progression generation (complex switch statements)
   These warnings are acceptable if the function is well-structured and readable.
+  - Note: Progression generation should use ts-pattern to reduce complexity.
 
 ### Accessibility Rules  
 - `a11y/useAnchorContent`: Links with proper `aria-label` and `title` attributes that contain SVG icons are already accessible. This rule may flag false positives when accessible content is provided via ARIA attributes.

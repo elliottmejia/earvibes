@@ -1,3 +1,4 @@
+import { match } from 'ts-pattern';
 import { type Chord, LevelType, type Progression } from '../types';
 
 // Simplified Key Maps for Demo Purposes (C Major and A Minor)
@@ -75,80 +76,63 @@ const getLevelConfig = (
   levelId: number,
   type: LevelType
 ): { key: string; map: Record<string, string[]>; pool: string[] } => {
-  switch (type) {
-    case LevelType.MAJOR:
-      return {
-        key: 'C Major',
-        map: C_MAJOR_TRIADS,
-        pool: levelId === 3 ? ['I', 'IV', 'V', 'V7', 'vi'] : ['I', 'ii', 'iii', 'IV', 'V', 'vi'],
-      };
-    case LevelType.MINOR:
-      return {
-        key: 'A Minor',
-        map: A_MINOR_TRIADS,
-        pool: ['i', 'III', 'iv', 'V', 'VI', 'VII'],
-      };
-    case LevelType.MIXOLYDIAN:
-      return {
-        key: 'C Mixolydian',
-        map: C_EXTENDED_TRIADS,
-        pool: ['I', 'IV', 'V', 'bVII', 'vi'],
-      };
-    case LevelType.MODAL_INTERCHANGE:
-      return {
-        key: 'C Major (Borrowed)',
-        map: C_EXTENDED_TRIADS,
-        pool: ['I', 'IV', 'V', 'bIII', 'bVI', 'bVII'],
-      };
-    case LevelType.SECONDARY_DOMINANT:
-      return {
-        key: 'C Major (Sec. Dom)',
-        map: { ...C_EXTENDED_TRIADS, ...SECONDARY_DOMINANT_7THS },
-        pool: ['I', 'IV', 'V', 'II7', 'III7', 'VI7'],
-      };
-    case LevelType.MINOR_PLAGAL:
-      return {
-        key: 'C Major (Minor iv)',
-        map: C_EXTENDED_TRIADS,
-        pool: ['I', 'IV', 'iv', 'V', 'vi'],
-      };
-    case LevelType.CHROMATIC:
-      return {
-        key: 'C Major (Chromatic)',
-        map: C_EXTENDED_TRIADS,
-        pool: ['I', 'V', 'vi', 'I+', 'I7'],
-      };
-    case LevelType.TRITONE_SUB:
-      return {
-        key: 'C Major (Jazz)',
-        map: C_TETRADS,
-        pool: ['IM7', 'ii7', 'V7', 'bII7', 'vi7'],
-      };
-    case LevelType.DORIAN:
-      return {
-        key: 'A Dorian (Coltrane)',
-        map: A_MINOR_TRIADS,
-        pool: ['i', 'IV', 'ii', 'bVII', 'III'],
-      };
-    case LevelType.OUDOU:
-      return {
-        key: 'C Major (Royal Road)',
-        map: C_TETRADS,
-        pool: ['IVM7', 'V7', 'iii7', 'vi7', 'IM7'],
-      };
-    case LevelType.CITY_POP:
-      return {
-        key: 'C Major (Tatsuro)',
-        map: C_CITY_POP,
-        pool: ['IM7', 'IVM7', 'III7', 'vi7', 'Gm7', 'IV/V'],
-      };
-    default:
-      return {
-        key: 'C Major',
-        map: C_MAJOR_TRIADS,
-        pool: ['I', 'IV', 'V'],
-      };
-  }
+  return match(type)
+    .with(LevelType.MAJOR, () => ({
+      key: 'C Major',
+      map: C_MAJOR_TRIADS,
+      pool: levelId === 3 ? ['I', 'IV', 'V', 'V7', 'vi'] : ['I', 'ii', 'iii', 'IV', 'V', 'vi'],
+    }))
+    .with(LevelType.MINOR, () => ({
+      key: 'A Minor',
+      map: A_MINOR_TRIADS,
+      pool: ['i', 'III', 'iv', 'V', 'VI', 'VII'],
+    }))
+    .with(LevelType.MIXOLYDIAN, () => ({
+      key: 'C Mixolydian',
+      map: C_EXTENDED_TRIADS,
+      pool: ['I', 'IV', 'V', 'bVII', 'vi'],
+    }))
+    .with(LevelType.MODAL_INTERCHANGE, () => ({
+      key: 'C Major (Borrowed)',
+      map: C_EXTENDED_TRIADS,
+      pool: ['I', 'IV', 'V', 'bIII', 'bVI', 'bVII'],
+    }))
+    .with(LevelType.SECONDARY_DOMINANT, () => ({
+      key: 'C Major (Sec. Dom)',
+      map: { ...C_EXTENDED_TRIADS, ...SECONDARY_DOMINANT_7THS },
+      pool: ['I', 'IV', 'V', 'II7', 'III7', 'VI7'],
+    }))
+    .with(LevelType.MINOR_PLAGAL, () => ({
+      key: 'C Major (Minor iv)',
+      map: C_EXTENDED_TRIADS,
+      pool: ['I', 'IV', 'iv', 'V', 'vi'],
+    }))
+    .with(LevelType.CHROMATIC, () => ({
+      key: 'C Major (Chromatic)',
+      map: C_EXTENDED_TRIADS,
+      pool: ['I', 'V', 'vi', 'I+', 'I7'],
+    }))
+    .with(LevelType.TRITONE_SUB, () => ({
+      key: 'C Major (Jazz)',
+      map: C_TETRADS,
+      pool: ['IM7', 'ii7', 'V7', 'bII7', 'vi7'],
+    }))
+    .with(LevelType.DORIAN, () => ({
+      key: 'A Dorian (Coltrane)',
+      map: A_MINOR_TRIADS,
+      pool: ['i', 'IV', 'ii', 'bVII', 'III'],
+    }))
+    .with(LevelType.OUDOU, () => ({
+      key: 'C Major (Royal Road)',
+      map: C_TETRADS,
+      pool: ['IVM7', 'V7', 'iii7', 'vi7', 'IM7'],
+    }))
+    .with(LevelType.CITY_POP, () => ({
+      key: 'C Major (Tatsuro)',
+      map: C_CITY_POP,
+      pool: ['IM7', 'IVM7', 'III7', 'vi7', 'Gm7', 'IV/V'],
+    }))
+    .exhaustive();
 };
 
 export const generateProgression = (levelId: number, type: LevelType): Progression => {
@@ -158,14 +142,11 @@ export const generateProgression = (levelId: number, type: LevelType): Progressi
   const result: Chord[] = [];
 
   // Determine tonic based on type
-  let firstChordStr = 'I';
-  if (type === LevelType.MINOR || type === LevelType.DORIAN) {
-    firstChordStr = 'i';
-  } else if (type === LevelType.OUDOU || type === LevelType.CITY_POP) {
-    firstChordStr = 'IVM7'; // City Pop often starts on IVM7 too
-  } else if (type === LevelType.TRITONE_SUB) {
-    firstChordStr = 'IM7';
-  }
+  const firstChordStr = match(type)
+    .with(LevelType.MINOR, LevelType.DORIAN, () => 'i')
+    .with(LevelType.OUDOU, LevelType.CITY_POP, () => 'IVM7') // City Pop often starts on IVM7 too
+    .with(LevelType.TRITONE_SUB, () => 'IM7')
+    .otherwise(() => 'I');
 
   // Special weighted logic for City Pop to create realistic "Just the Two of Us" or "Ride on Time" flows
   if (type === LevelType.CITY_POP) {
@@ -226,14 +207,13 @@ export const generateProgression = (levelId: number, type: LevelType): Progressi
 };
 
 export const getChordNotes = (roman: string, levelType: LevelType): string[] => {
-  if (levelType === LevelType.MINOR || levelType === LevelType.DORIAN)
-    return A_MINOR_TRIADS[roman] || [];
-  if (levelType === LevelType.CITY_POP) return C_CITY_POP[roman] || [];
-  if (levelType === LevelType.OUDOU || levelType === LevelType.TRITONE_SUB)
-    return C_TETRADS[roman] || [];
-  if (levelType === LevelType.SECONDARY_DOMINANT && SECONDARY_DOMINANT_7THS[roman])
-    return SECONDARY_DOMINANT_7THS[roman] || [];
-
-  // All other Major-based modes (Mixolydian, Extended) use the C Extended map
-  return C_EXTENDED_TRIADS[roman] || [];
+  return match(levelType)
+    .with(LevelType.MINOR, LevelType.DORIAN, () => A_MINOR_TRIADS[roman] || [])
+    .with(LevelType.CITY_POP, () => C_CITY_POP[roman] || [])
+    .with(LevelType.OUDOU, LevelType.TRITONE_SUB, () => C_TETRADS[roman] || [])
+    .with(
+      LevelType.SECONDARY_DOMINANT,
+      () => SECONDARY_DOMINANT_7THS[roman] || C_EXTENDED_TRIADS[roman] || []
+    )
+    .otherwise(() => C_EXTENDED_TRIADS[roman] || []);
 };

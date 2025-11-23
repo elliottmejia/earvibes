@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
+import { match } from 'ts-pattern';
 import { GameArea } from './components/GameArea';
 import { LevelSelector } from './components/LevelSelector';
 import { RealSongGameArea } from './components/RealSongGameArea';
@@ -13,7 +14,9 @@ import type { GameState, LevelConfig, RealSong } from './types';
 
 // Type Guard
 const isLanguage = (lang: string): lang is Language => {
-  return ['en', 'es', 'pt', 'ja'].includes(lang);
+  return match(lang as Language)
+    .with('en', 'es', 'pt', 'ja', () => true)
+    .otherwise(() => false);
 };
 
 const Header: React.FC<{ onBack: () => void }> = ({ onBack }) => {
