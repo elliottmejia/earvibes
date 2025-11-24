@@ -1,32 +1,196 @@
 import { match } from 'ts-pattern';
 import { type Chord, LevelType, type Progression } from '../types';
 
-// Simplified Key Maps for Demo Purposes (C Major and A Minor)
-// In a full app, this would be algorithmic for all 12 keys.
+// All 12 chromatic notes for transposition
+const CHROMATIC_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
+const MAJOR_KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
+const MINOR_KEYS = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'] as const;
 
-const C_MAJOR_TRIADS: Record<string, string[]> = {
-  I: ['C4', 'E4', 'G4'],
-  ii: ['D4', 'F4', 'A4'],
-  iii: ['E4', 'G4', 'B4'],
-  IV: ['F4', 'A4', 'C5'],
-  V: ['G4', 'B4', 'D5'],
-  V7: ['G4', 'B4', 'D5', 'F5'],
-  vi: ['A4', 'C5', 'E5'],
-  'vii°': ['B4', 'D5', 'F5'],
+type Note = (typeof CHROMATIC_NOTES)[number];
+type Key = (typeof MAJOR_KEYS)[number] | (typeof MINOR_KEYS)[number];
+
+// Base chord intervals (semitones from root)
+const CHORD_INTERVALS = {
+  // Triads
+  major: [0, 4, 7],
+  minor: [0, 3, 7],
+  diminished: [0, 3, 6],
+  augmented: [0, 4, 8],
+  // Sevenths
+  dominant7: [0, 4, 7, 10],
+  major7: [0, 4, 7, 11],
+  minor7: [0, 3, 7, 10],
+  // Suspended
+  sus4: [0, 5, 7],
+  sus2: [0, 2, 7],
+} as const;
+
+// Roman numeral to chord type mapping
+const ROMAN_TO_CHORD_TYPE: Record<string, keyof typeof CHORD_INTERVALS> = {
+  // Major key diatonic
+  I: 'major',
+  ii: 'minor',
+  iii: 'minor',
+  IV: 'major',
+  V: 'major',
+  vi: 'minor',
+  'vii°': 'diminished',
+  // Minor key diatonic
+  i: 'minor',
+  'ii°': 'diminished',
+  III: 'major',
+  VI: 'major',
+  VII: 'major',
+  // Extended chords
+  V7: 'dominant7',
+  IM7: 'major7',
+  IVM7: 'major7',
+  ii7: 'minor7',
+  iii7: 'minor7',
+  vi7: 'minor7',
+  bII7: 'dominant7',
+  II7: 'dominant7',
+  III7: 'dominant7',
+  VI7: 'dominant7',
+  // Modal interchange
+  bIII: 'major',
+  bVI: 'major',
+  bVII: 'major',
+  // Special chords
+  'I+': 'augmented',
+  I7: 'dominant7',
+  Gm7: 'minor7',
+  'IV/V': 'sus4', // Special case for slash chord
 };
 
-const A_MINOR_TRIADS: Record<string, string[]> = {
-  i: ['A3', 'C4', 'E4'],
-  ii: ['B3', 'D4', 'F#4'], // Dorian ii (Minor) is same as Natural Minor ii dim? No, Dorian has F#. So ii is B D F# (Minor). Natural Minor ii is B D F (Dim). Let's define Dorian specifically.
-  'ii°': ['B3', 'D4', 'F4'],
-  III: ['C4', 'E4', 'G4'],
-  IV: ['D4', 'F#4', 'A4'], // Dorian IV (Major)
-  iv: ['D4', 'F4', 'A4'],
-  v: ['E4', 'G4', 'B4'], // Natural minor
-  V: ['E4', 'G#4', 'B4'], // Harmonic minor variant commonly used
-  VI: ['F4', 'A4', 'C5'],
-  VII: ['G4', 'B4', 'D5'],
+// Transpose a note by semitones
+const transposeNote = (note: string, semitones: number): string => {
+  const noteName = note.slice(0, -1); // Remove octave
+  const octaveStr = note.slice(-1);
+  const octave = parseInt(octaveStr);
+  const noteIndex = CHROMATIC_NOTES.indexOf(noteName as Note);
+
+  if (noteIndex === -1 || isNaN(octave)) return note;
+
+  const newIndex = (noteIndex + semitones) % 12;
+  const newOctave = octave + Math.floor((noteIndex + semitones) / 12);
+
+  return `${CHROMATIC_NOTES[newIndex]}${newOctave}`;
 };
+
+// Generate chord notes for a given root note and chord type
+const generateChordNotes = (
+  rootNote: string,
+  chordType: keyof typeof CHORD_INTERVALS,
+  octave: number = 4
+): string[] => {
+  const intervals = CHORD_INTERVALS[chordType];
+  return intervals.map((semitone) => {
+    return transposeNote(`${rootNote}${octave}`, semitone);
+  });
+};
+
+// Generate chord map for a specific key
+const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, string[]> => {
+  const keyIndex = isMinor
+    ? MINOR_KEYS.indexOf(key as (typeof MINOR_KEYS)[number])
+    : MAJOR_KEYS.indexOf(key as (typeof MAJOR_KEYS)[number]);
+
+  if (keyIndex === -1) return {};
+
+  const rootNote = isMinor ? MINOR_KEYS[keyIndex] : MAJOR_KEYS[keyIndex];
+  const map: Record<string, string[]> = {};
+
+  // Generate diatonic chords based on scale degrees
+  const scaleDegrees = isMinor
+    ? ['i', 'ii°', 'III', 'iv', 'v', 'V', 'VI', 'VII']
+    : ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+
+  scaleDegrees.forEach((degree, index) => {
+    const chordType = ROMAN_TO_CHORD_TYPE[degree];
+    if (chordType) {
+      const semitoneOffset = isMinor
+        ? [0, 2, 3, 5, 7, 8, 10][index]!
+        : [0, 2, 4, 5, 7, 9, 11][index]!;
+      const degreeRoot = transposeNote(`${rootNote}4`, semitoneOffset);
+      const rootNoteName = degreeRoot.slice(0, -1);
+      const octaveStr = degreeRoot.slice(-1);
+      const octave = parseInt(octaveStr);
+      if (!isNaN(octave)) {
+        map[degree] = generateChordNotes(rootNoteName, chordType, octave);
+      }
+    }
+  });
+
+  // Add extended chords
+  const extendedChords = [
+    'V7',
+    'IM7',
+    'IVM7',
+    'ii7',
+    'iii7',
+    'vi7',
+    'bII7',
+    'II7',
+    'III7',
+    'VI7',
+    'bIII',
+    'bVI',
+    'bVII',
+    'iv',
+    'I+',
+    'I7',
+  ];
+  extendedChords.forEach((chordSymbol) => {
+    const chordType = ROMAN_TO_CHORD_TYPE[chordSymbol];
+    if (chordType) {
+      let rootSemitone = 0;
+
+      // Calculate root semitone based on Roman numeral
+      if (chordSymbol.startsWith('b')) {
+        const roman = chordSymbol.slice(1);
+        const romanIndex = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'].indexOf(roman);
+        if (romanIndex !== -1) rootSemitone = [0, 2, 4, 5, 7, 9, 11][romanIndex]! - 1;
+      } else if (chordSymbol.includes('7') && !chordSymbol.includes('b')) {
+        const roman = chordSymbol.replace('7', '');
+        const romanIndex = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'].indexOf(roman);
+        if (romanIndex !== -1) rootSemitone = [0, 2, 4, 5, 7, 9, 11][romanIndex]!;
+      } else if (chordSymbol === 'iv') {
+        rootSemitone = 5; // IV in major
+      } else if (chordSymbol === 'I+') {
+        rootSemitone = 0; // I
+      } else if (chordSymbol === 'I7') {
+        rootSemitone = 0; // I
+      }
+
+      const degreeRoot = transposeNote(`${rootNote}4`, rootSemitone);
+      const rootNoteName = degreeRoot.slice(0, -1);
+      const octaveStr = degreeRoot.slice(-1);
+      const octave = parseInt(octaveStr);
+      if (!isNaN(octave)) {
+        map[chordSymbol] = generateChordNotes(rootNoteName, chordType, octave);
+      }
+    }
+  });
+
+  // Special case for City Pop chords
+  if (key === 'C') {
+    map['Gm7'] = ['G3', 'Bb3', 'D4', 'F4']; // Lower octave for warmth
+    map['IV/V'] = ['G3', 'F4', 'A4', 'C5']; // F/G slash chord
+  }
+
+  return map;
+};
+
+// Helper function to select random key
+const getRandomKey = (isMinor: boolean = false): Key => {
+  const keys = isMinor ? MINOR_KEYS : MAJOR_KEYS;
+  return keys[Math.floor(Math.random() * keys.length)]!;
+};
+
+// Legacy exports for backward compatibility
+const C_MAJOR_TRIADS = generateKeyMap('C', false);
+const A_MINOR_TRIADS = generateKeyMap('A', true);
 
 // Extended C Major Map for Rock/Blues/Jazz concepts
 const C_EXTENDED_TRIADS: Record<string, string[]> = {
@@ -77,61 +241,115 @@ const getLevelConfig = (
   type: LevelType
 ): { key: string; map: Record<string, string[]>; pool: string[] } => {
   return match(type)
-    .with(LevelType.MAJOR, () => ({
-      key: 'C Major',
-      map: C_MAJOR_TRIADS,
-      pool: levelId === 3 ? ['I', 'IV', 'V', 'V7', 'vi'] : ['I', 'ii', 'iii', 'IV', 'V', 'vi'],
-    }))
-    .with(LevelType.MINOR, () => ({
-      key: 'A Minor',
-      map: A_MINOR_TRIADS,
-      pool: ['i', 'III', 'iv', 'V', 'VI', 'VII'],
-    }))
-    .with(LevelType.MIXOLYDIAN, () => ({
-      key: 'C Mixolydian',
-      map: C_EXTENDED_TRIADS,
-      pool: ['I', 'IV', 'V', 'bVII', 'vi'],
-    }))
-    .with(LevelType.MODAL_INTERCHANGE, () => ({
-      key: 'C Major (Borrowed)',
-      map: C_EXTENDED_TRIADS,
-      pool: ['I', 'IV', 'V', 'bIII', 'bVI', 'bVII'],
-    }))
-    .with(LevelType.SECONDARY_DOMINANT, () => ({
-      key: 'C Major (Sec. Dom)',
-      map: { ...C_EXTENDED_TRIADS, ...SECONDARY_DOMINANT_7THS },
-      pool: ['I', 'IV', 'V', 'II7', 'III7', 'VI7'],
-    }))
-    .with(LevelType.MINOR_PLAGAL, () => ({
-      key: 'C Major (Minor iv)',
-      map: C_EXTENDED_TRIADS,
-      pool: ['I', 'IV', 'iv', 'V', 'vi'],
-    }))
-    .with(LevelType.CHROMATIC, () => ({
-      key: 'C Major (Chromatic)',
-      map: C_EXTENDED_TRIADS,
-      pool: ['I', 'V', 'vi', 'I+', 'I7'],
-    }))
-    .with(LevelType.TRITONE_SUB, () => ({
-      key: 'C Major (Jazz)',
-      map: C_TETRADS,
-      pool: ['IM7', 'ii7', 'V7', 'bII7', 'vi7'],
-    }))
-    .with(LevelType.DORIAN, () => ({
-      key: 'A Dorian (Coltrane)',
-      map: A_MINOR_TRIADS,
-      pool: ['i', 'IV', 'ii', 'bVII', 'III'],
-    }))
-    .with(LevelType.OUDOU, () => ({
-      key: 'C Major (Royal Road)',
-      map: C_TETRADS,
-      pool: ['IVM7', 'V7', 'iii7', 'vi7', 'IM7'],
-    }))
-    .with(LevelType.CITY_POP, () => ({
-      key: 'C Major (Tatsuro)',
-      map: C_CITY_POP,
-      pool: ['IM7', 'IVM7', 'III7', 'vi7', 'Gm7', 'IV/V'],
-    }))
+    .with(LevelType.MAJOR, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major`,
+        map: keyMap,
+        pool: levelId === 3 ? ['I', 'IV', 'V', 'V7', 'vi'] : ['I', 'ii', 'iii', 'IV', 'V', 'vi'],
+      };
+    })
+    .with(LevelType.MINOR, () => {
+      const randomKey = getRandomKey(true);
+      const keyMap = generateKeyMap(randomKey, true);
+      return {
+        key: `${randomKey} Minor`,
+        map: keyMap,
+        pool: ['i', 'III', 'iv', 'V', 'VI', 'VII'],
+      };
+    })
+    .with(LevelType.MIXOLYDIAN, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Mixolydian`,
+        map: keyMap,
+        pool: ['I', 'IV', 'V', 'bVII', 'vi'],
+      };
+    })
+    .with(LevelType.MODAL_INTERCHANGE, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Borrowed)`,
+        map: keyMap,
+        pool: ['I', 'IV', 'V', 'bIII', 'bVI', 'bVII'],
+      };
+    })
+    .with(LevelType.SECONDARY_DOMINANT, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Sec. Dom)`,
+        map: keyMap,
+        pool: ['I', 'IV', 'V', 'II7', 'III7', 'VI7'],
+      };
+    })
+    .with(LevelType.MINOR_PLAGAL, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Minor iv)`,
+        map: keyMap,
+        pool: ['I', 'IV', 'iv', 'V', 'vi'],
+      };
+    })
+    .with(LevelType.CHROMATIC, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Chromatic)`,
+        map: keyMap,
+        pool: ['I', 'V', 'vi', 'I+', 'I7'],
+      };
+    })
+    .with(LevelType.TRITONE_SUB, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Jazz)`,
+        map: keyMap,
+        pool: ['IM7', 'ii7', 'V7', 'bII7', 'vi7'],
+      };
+    })
+    .with(LevelType.DORIAN, () => {
+      const randomKey = getRandomKey(true);
+      const keyMap = generateKeyMap(randomKey, true);
+      return {
+        key: `${randomKey} Dorian (Coltrane)`,
+        map: keyMap,
+        pool: ['i', 'IV', 'ii', 'bVII', 'III'],
+      };
+    })
+    .with(LevelType.OUDOU, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      return {
+        key: `${randomKey} Major (Royal Road)`,
+        map: keyMap,
+        pool: ['IVM7', 'V7', 'iii7', 'vi7', 'IM7'],
+      };
+    })
+    .with(LevelType.CITY_POP, () => {
+      const randomKey = getRandomKey(false);
+      const keyMap = generateKeyMap(randomKey, false);
+      // Add special City Pop chords for any key
+      const rootNote = randomKey;
+      const fourthNote = transposeNote(`${rootNote}4`, 5);
+      keyMap['Gm7'] = generateChordNotes('G', 'minor7', 3); // Relative to key
+      keyMap['IV/V'] = [
+        `${fourthNote.slice(0, -1)}3`,
+        `${rootNote}4`,
+        transposeNote(`${rootNote}4`, 4),
+        transposeNote(`${rootNote}4`, 7),
+      ]; // Slash chord
+      return {
+        key: `${randomKey} Major (Tatsuro)`,
+        map: keyMap,
+        pool: ['IM7', 'IVM7', 'III7', 'vi7', 'Gm7', 'IV/V'],
+      };
+    })
     .exhaustive();
 };
 
@@ -206,7 +424,16 @@ export const generateProgression = (levelId: number, type: LevelType): Progressi
   };
 };
 
-export const getChordNotes = (roman: string, levelType: LevelType): string[] => {
+export const getChordNotes = (roman: string, levelType: LevelType, key?: string): string[] => {
+  // If key is provided, generate chord notes dynamically
+  if (key) {
+    const keyName = key.split(' ')[0]; // Extract "C" from "C Major"
+    const isMinor = key.includes('Minor') || key.includes('Dorian');
+    const keyMap = generateKeyMap(keyName as Key, isMinor);
+    return keyMap[roman] || [];
+  }
+
+  // Fallback to legacy behavior for backward compatibility
   return match(levelType)
     .with(LevelType.MINOR, LevelType.DORIAN, () => A_MINOR_TRIADS[roman] || [])
     .with(LevelType.CITY_POP, () => C_CITY_POP[roman] || [])

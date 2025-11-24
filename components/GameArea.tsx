@@ -525,10 +525,14 @@ export const GameArea: React.FC<Props> = ({ gameState, setGameState, onBack, onN
   const playSingleChord = useCallback(
     async (chordRoman: string): Promise<void> => {
       if (!gameState.level) return;
-      const notes = getChordNotes(chordRoman, gameState.level.type);
+      const notes = getChordNotes(
+        chordRoman,
+        gameState.level.type,
+        gameState.currentProgression?.key
+      );
       await audioService.playNotes(notes, 1.0);
     },
-    [gameState.level]
+    [gameState.level, gameState.currentProgression]
   );
 
   const handleSelectChord = useCallback(
