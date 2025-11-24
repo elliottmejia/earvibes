@@ -243,7 +243,7 @@ describe('TheoryService', () => {
       progression.chords.forEach((chord: Chord) => {
         chord.notes.forEach((note: string) => {
           // Notes should be in reasonable octave range (3-6)
-          const octave = parseInt(note.slice(-1));
+          const octave = parseInt(note.slice(-1), 10);
           expect(octave).toBeGreaterThanOrEqual(3);
           expect(octave).toBeLessThanOrEqual(6);
 
@@ -260,7 +260,7 @@ describe('TheoryService', () => {
 
       progression.chords.forEach((chord: Chord) => {
         if (chord.notes.length >= 2) {
-          const octaves = chord.notes.map((note: string) => parseInt(note.slice(-1)));
+          const octaves = chord.notes.map((note: string) => parseInt(note.slice(-1), 10));
           const maxOctave = Math.max(...octaves);
           const minOctave = Math.min(...octaves);
 

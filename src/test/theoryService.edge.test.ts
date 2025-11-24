@@ -135,7 +135,7 @@ describe('TheoryService Edge Cases', () => {
           // Extract note name and octave
           const noteName = note.slice(0, -1);
           const octaveStr = note.slice(-1);
-          const octave = parseInt(octaveStr);
+          const octave = parseInt(octaveStr, 10);
 
           // Validate note name
           const validNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -146,7 +146,7 @@ describe('TheoryService Edge Cases', () => {
           expect(octave).toBeLessThanOrEqual(8);
 
           // Validate that it's a number
-          expect(!isNaN(octave)).toBe(true);
+          expect(!Number.isNaN(octave)).toBe(true);
         });
       });
     });

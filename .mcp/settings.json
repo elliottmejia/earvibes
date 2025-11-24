@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-context7"],
+      "description": "Context7 - AI-powered library documentation and code generation"
+    }
+  }
+}

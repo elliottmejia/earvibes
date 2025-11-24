@@ -67,10 +67,10 @@ const ROMAN_TO_CHORD_TYPE: Record<string, keyof typeof CHORD_INTERVALS> = {
 const transposeNote = (note: string, semitones: number): string => {
   const noteName = note.slice(0, -1); // Remove octave
   const octaveStr = note.slice(-1);
-  const octave = parseInt(octaveStr);
+  const octave = parseInt(octaveStr, 10);
   const noteIndex = CHROMATIC_NOTES.indexOf(noteName as Note);
 
-  if (noteIndex === -1 || isNaN(octave)) return note;
+  if (noteIndex === -1 || Number.isNaN(octave)) return note;
 
   const newIndex = (noteIndex + semitones) % 12;
   const newOctave = octave + Math.floor((noteIndex + semitones) / 12);
@@ -115,8 +115,8 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
       const degreeRoot = transposeNote(`${rootNote}4`, semitoneOffset);
       const rootNoteName = degreeRoot.slice(0, -1);
       const octaveStr = degreeRoot.slice(-1);
-      const octave = parseInt(octaveStr);
-      if (!isNaN(octave)) {
+      const octave = parseInt(octaveStr, 10);
+      if (!Number.isNaN(octave)) {
         map[degree] = generateChordNotes(rootNoteName, chordType, octave);
       }
     }
@@ -166,8 +166,8 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
       const degreeRoot = transposeNote(`${rootNote}4`, rootSemitone);
       const rootNoteName = degreeRoot.slice(0, -1);
       const octaveStr = degreeRoot.slice(-1);
-      const octave = parseInt(octaveStr);
-      if (!isNaN(octave)) {
+      const octave = parseInt(octaveStr, 10);
+      if (!Number.isNaN(octave)) {
         map[chordSymbol] = generateChordNotes(rootNoteName, chordType, octave);
       }
     }
