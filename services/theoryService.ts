@@ -39,6 +39,8 @@ const ROMAN_TO_CHORD_TYPE: Record<string, keyof typeof CHORD_INTERVALS> = {
   i: 'minor',
   'ii°': 'diminished',
   III: 'major',
+  iv: 'minor',
+  v: 'minor',
   VI: 'major',
   VII: 'major',
   // Extended chords
@@ -103,7 +105,7 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
 
   // Generate diatonic chords based on scale degrees
   const scaleDegrees = isMinor
-    ? ['i', 'ii°', 'III', 'iv', 'v', 'V', 'VI', 'VII']
+    ? ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII']
     : ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
 
   scaleDegrees.forEach((degree, index) => {
@@ -256,7 +258,7 @@ const getLevelConfig = (
       return {
         key: `${randomKey} Minor`,
         map: keyMap,
-        pool: ['i', 'III', 'iv', 'V', 'VI', 'VII'],
+        pool: ['i', 'III', 'iv', 'v', 'VI', 'VII'],
       };
     })
     .with(LevelType.MIXOLYDIAN, () => {

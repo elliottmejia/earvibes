@@ -45,7 +45,7 @@ describe('TheoryService', () => {
       expect(progression.key).toMatch(/^[A-G][#b]? Minor$/);
 
       // Check that all chords are valid minor key chords
-      const validMinorChords = ['i', 'III', 'iv', 'V', 'VI', 'VII'];
+      const validMinorChords = ['i', 'III', 'iv', 'v', 'VI', 'VII'];
       progression.chords.forEach((chord: Chord) => {
         expect(validMinorChords).toContain(chord.roman);
       });
