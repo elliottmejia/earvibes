@@ -3,8 +3,26 @@ import { type Chord, LevelType, type Progression } from '../types';
 
 // All 12 chromatic notes for transposition
 const CHROMATIC_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
+
+// O(1) lookup maps for chromatic notes
+const CHROMATIC_NOTES_MAP = new Map<string, number>();
+CHROMATIC_NOTES.forEach((note, index) => {
+  CHROMATIC_NOTES_MAP.set(note, index);
+});
+
 const MAJOR_KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
 const MINOR_KEYS = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'] as const;
+
+// O(1) lookup maps for major and minor keys
+const MAJOR_KEYS_MAP = new Map<string, number>();
+MAJOR_KEYS.forEach((key, index) => {
+  MAJOR_KEYS_MAP.set(key, index);
+});
+
+const MINOR_KEYS_MAP = new Map<string, number>();
+MINOR_KEYS.forEach((key, index) => {
+  MINOR_KEYS_MAP.set(key, index);
+});
 
 type Note = (typeof CHROMATIC_NOTES)[number];
 type Key = (typeof MAJOR_KEYS)[number] | (typeof MINOR_KEYS)[number];
@@ -65,12 +83,26 @@ const ROMAN_TO_CHORD_TYPE: Record<string, keyof typeof CHORD_INTERVALS> = {
   'IV/V': 'sus4', // Special case for slash chord
 };
 
+// O(1) lookup for Roman numerals (defined once)
+const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'] as const;
+const ROMAN_NUMERALS_MAP = new Map<string, number>();
+ROMAN_NUMERALS.forEach((numeral, index) => {
+  ROMAN_NUMERALS_MAP.set(numeral, index);
+});
+
+// Scale degree semitones for major and minor keys
+const MAJOR_SCALE_SEMITONES = [0, 2, 4, 5, 7, 9, 11] as const;
+const MINOR_SCALE_SEMITONES = [0, 2, 3, 5, 7, 8, 10] as const;
+
+// Scale degree semitones for Roman numerals (for extended chords)
+const ROMAN_SEMITONES = [0, 2, 4, 5, 7, 9, 11] as const;
+
 // Transpose a note by semitones
 const transposeNote = (note: string, semitones: number): string => {
   const noteName = note.slice(0, -1); // Remove octave
   const octaveStr = note.slice(-1);
   const octave = parseInt(octaveStr, 10);
-  const noteIndex = CHROMATIC_NOTES.indexOf(noteName as Note);
+  const noteIndex = CHROMATIC_NOTES_MAP.get(noteName as Note) ?? -1;
 
   if (noteIndex === -1 || Number.isNaN(octave)) return note;
 
@@ -95,8 +127,8 @@ const generateChordNotes = (
 // Generate chord map for a specific key
 const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, string[]> => {
   const keyIndex = isMinor
-    ? MINOR_KEYS.indexOf(key as (typeof MINOR_KEYS)[number])
-    : MAJOR_KEYS.indexOf(key as (typeof MAJOR_KEYS)[number]);
+    ? (MINOR_KEYS_MAP.get(key as (typeof MINOR_KEYS)[number]) ?? -1)
+    : (MAJOR_KEYS_MAP.get(key as (typeof MAJOR_KEYS)[number]) ?? -1);
 
   if (keyIndex === -1) return {};
 
@@ -112,8 +144,8 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
     const chordType = ROMAN_TO_CHORD_TYPE[degree];
     if (chordType) {
       const semitoneOffset = isMinor
-        ? [0, 2, 3, 5, 7, 8, 10][index]!
-        : [0, 2, 4, 5, 7, 9, 11][index]!;
+        ? MINOR_SCALE_SEMITONES[index]!
+        : MAJOR_SCALE_SEMITONES[index]!;
       const degreeRoot = transposeNote(`${rootNote}4`, semitoneOffset);
       const rootNoteName = degreeRoot.slice(0, -1);
       const octaveStr = degreeRoot.slice(-1);
@@ -143,6 +175,7 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
     'I+',
     'I7',
   ];
+
   extendedChords.forEach((chordSymbol) => {
     const chordType = ROMAN_TO_CHORD_TYPE[chordSymbol];
     if (chordType) {
@@ -151,12 +184,12 @@ const generateKeyMap = (key: Key, isMinor: boolean = false): Record<string, stri
       // Calculate root semitone based on Roman numeral
       if (chordSymbol.startsWith('b')) {
         const roman = chordSymbol.slice(1);
-        const romanIndex = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'].indexOf(roman);
-        if (romanIndex !== -1) rootSemitone = [0, 2, 4, 5, 7, 9, 11][romanIndex]! - 1;
+        const romanIndex = ROMAN_NUMERALS_MAP.get(roman);
+        if (romanIndex !== undefined) rootSemitone = ROMAN_SEMITONES[romanIndex]! - 1;
       } else if (chordSymbol.includes('7') && !chordSymbol.includes('b')) {
         const roman = chordSymbol.replace('7', '');
-        const romanIndex = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'].indexOf(roman);
-        if (romanIndex !== -1) rootSemitone = [0, 2, 4, 5, 7, 9, 11][romanIndex]!;
+        const romanIndex = ROMAN_NUMERALS_MAP.get(roman);
+        if (romanIndex !== undefined) rootSemitone = ROMAN_SEMITONES[romanIndex]!;
       } else if (chordSymbol === 'iv') {
         rootSemitone = 5; // IV in major
       } else if (chordSymbol === 'I+') {
