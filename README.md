@@ -6,9 +6,9 @@ EarVibes is an interactive, open-source ear training application designed to hel
 
 The application is live at: [https://wilsonnet.github.io/earvibes](https://wilsonnet.github.io/earvibes)
 
-## Instruction Video
+## Instructional Video
 
-Watch the instruction video to learn how to use EarVibes: [https://www.youtube.com/watch?v=OM4gSNJ0bP8](https://www.youtube.com/watch?v=OM4gSNJ0bP8)
+Watch the instructional video to learn how to use EarVibes: [https://www.youtube.com/watch?v=OM4gSNJ0bP8](https://www.youtube.com/watch?v=OM4gSNJ0bP8)
 
 ## Features
 
